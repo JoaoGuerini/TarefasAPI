@@ -17,38 +17,92 @@ namespace TarefasAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Usuario>>> BuscarUsuarios()
         {
-            List<Usuario> listaUsuarios = await _usuarioRepository.BuscarTodosUsuarios();
-            return Ok(listaUsuarios);
+            try
+            {
+                List<Usuario> listaUsuarios = await _usuarioRepository.BuscarTodosUsuarios();
+                return Ok(listaUsuarios);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Erro interno no servidor" });
+            }
+            
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> BuscarPorId(int id)
         {
-            Usuario usuario = await _usuarioRepository.BuscarId(id);
-            return Ok(usuario);
+            try
+            {
+                Usuario usuario = await _usuarioRepository.BuscarId(id);
+                return Ok(usuario);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Erro interno no servidor" });
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<Usuario>> Cadastrar([FromBody] Usuario usuario)
         {
-            Usuario usuarioAdd = await _usuarioRepository.Adicionar(usuario);
+            try
+            {
+                Usuario usuarioAdd = await _usuarioRepository.Adicionar(usuario);
 
-            return Ok(usuarioAdd);
+                return Ok(usuarioAdd);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Erro interno no servidor" });
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Usuario>> RemoverTodos(int id)
         {
-            var excluido = await _usuarioRepository.Apagar(id);
-            return Ok(excluido);
+            try
+            {
+                bool excluido = await _usuarioRepository.Apagar(id);
+                return Ok(excluido);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return BadRequest(new {Message = ex.Message});
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { Message = "Erro interno no servidor." });
+            }
+            
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Usuario>> Atualizar([FromBody] Usuario usuario, int id)
         {
-            usuario.Id = id;
-            Usuario usuarioAtt = await _usuarioRepository.Atualizar(usuario, id);
-            return Ok(usuarioAtt);
+            try
+            {
+                usuario.Id = id;
+                Usuario usuarioAtt = await _usuarioRepository.Atualizar(usuario, id);
+                return Ok(usuarioAtt);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return BadRequest(new {Message = ex.Message});
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { Message = "Erro interno no servidor" });
+            }
+            
         }
 
     }

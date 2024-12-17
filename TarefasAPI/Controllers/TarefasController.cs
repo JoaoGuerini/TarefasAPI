@@ -19,48 +19,114 @@ namespace TarefasApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Tarefa>>> BuscarTodasTarefas()
         {
-            List<Tarefa> tarefas = await _tarefasRepository.BuscarTodasTarefas();
+            try
+            {
+                List<Tarefa> tarefas = await _tarefasRepository.BuscarTodasTarefas();
 
-            return Ok(tarefas);
+                return Ok(tarefas);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro interno no servidor." });
+            }
+           
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<List<Tarefa>>> BuscarTarefasUsuarioId(int id)
         {
-            List<Tarefa> tarefas = await _tarefasRepository.BuscarTarefasUsuario(id);
-            return Ok(tarefas);
+            try
+            {
+                List<Tarefa> tarefas = await _tarefasRepository.BuscarTarefasUsuario(id);
+                return Ok(tarefas);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro interno no servidor."});
+            }
+            
         }
 
         [HttpGet("{idUsuario}/{idTarefa}")]
         public async Task<ActionResult<Tarefa>> BuscarTarefaUsuarioId(int idUsuario, int idTarefa)
         {
-            Tarefa tarefa = await _tarefasRepository.BuscarTarefaUsuarioId(idUsuario, idTarefa);
+            try
+            {
+                Tarefa tarefa = await _tarefasRepository.BuscarTarefaUsuarioId(idUsuario, idTarefa);
 
-            return Ok(tarefa);
+                return Ok(tarefa);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { Message = "Erro interno no servidor." });
+            }
+            
         }
 
         [HttpPost("{idUsuario}")]
         public async Task<ActionResult<Tarefa>> CadastrarTarefa([FromBody] Tarefa tarefa, int idUsuario)
         {
-            Tarefa tarefaCadastrada = await _tarefasRepository.CadastrarTarefa(tarefa, idUsuario);
+            try
+            {
+                Tarefa tarefaCadastrada = await _tarefasRepository.CadastrarTarefa(tarefa, idUsuario);
+                return Ok(tarefaCadastrada);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Erro interno no servidor." });
+            }
 
-            return Ok(tarefaCadastrada);
         }
 
         [HttpPut("{idUsuario}/{idTarefa}")]
         public async Task<ActionResult<Tarefa>> AtualizarTarefa([FromBody] Tarefa tarefa, int idUsuario, int idTarefa)
         {
-            Tarefa tarefaAtt = await _tarefasRepository.AtualizarTarefa(tarefa, idTarefa, idUsuario);
+            try
+            {
+                Tarefa tarefaAtt = await _tarefasRepository.AtualizarTarefa(tarefa, idTarefa, idUsuario);
 
-            return Ok(tarefaAtt);
+                return Ok(tarefaAtt);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Erro interno no servidor." });
+            }
+
         }
 
         [HttpDelete("{idUsuario}/{idTarefa}")]
         public async Task<ActionResult<Tarefa>> ExcluirTarefa(int idTarefa, int idUsuario)
         {
-            Tarefa tarefaDelete = await _tarefasRepository.ExcluirTarefa(idTarefa, idUsuario);
+            try
+            {
+                Tarefa tarefaDelete = await _tarefasRepository.ExcluirTarefa(idTarefa, idUsuario);
 
-            return Ok(tarefaDelete);
+                return Ok(tarefaDelete);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Erro interno no servidor." });
+            }
         }
     }
 }

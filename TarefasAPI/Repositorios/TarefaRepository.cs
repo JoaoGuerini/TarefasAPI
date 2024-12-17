@@ -22,7 +22,7 @@ namespace TarefasApi.Repositorios
 
             if (usuarioId == null)
             {
-                throw new Exception($"Erro Usuario: Usuario de id {usuarioId} não encontrado");
+                throw new KeyNotFoundException($"Erro Usuario: Usuario de id {usuarioId} não encontrado");
             }
 
             return await _dbContext.Tarefas
@@ -36,7 +36,7 @@ namespace TarefasApi.Repositorios
 
             if (usuarioId == null)
             {
-                throw new Exception($"Erro Usuario: Usuario de id {usuarioId} não encontrado");
+                throw new KeyNotFoundException($"Erro Usuario: Usuario de id {usuarioId} não encontrado");
             }
 
             return await _dbContext.Tarefas.FirstOrDefaultAsync(tarefa => tarefa.Id == idTarefa && tarefa.UsuarioId == idUsuario);
@@ -52,14 +52,14 @@ namespace TarefasApi.Repositorios
 
             if (usuarioId == null)
             {
-                throw new Exception($"Erro Usuario: Usuario de id {usuarioId} não encontrado");
+                throw new KeyNotFoundException($"Erro Usuario: Usuario de id {usuarioId} não encontrado");
             }
 
             Tarefa tarefaId = await BuscarTarefaUsuarioId(idUsuario, idTarefa);
 
             if(tarefaId == null)
             {
-                throw new Exception($"Erro tarefa: {tarefaId} não encontrada");
+                throw new KeyNotFoundException($"Erro tarefa: {tarefaId} não encontrada");
             }
 
             tarefaId.Name = tarefa.Name;
@@ -81,7 +81,7 @@ namespace TarefasApi.Repositorios
 
             if(usuarioId == null)
             {
-                throw new Exception($"Erro Usuario: Usuario de id {usuarioId} não encontrado");
+                throw new KeyNotFoundException($"Erro Usuario: Usuario de id {usuarioId} não encontrado");
             }
 
             tarefa.UsuarioId = idUsuario;
@@ -99,12 +99,12 @@ namespace TarefasApi.Repositorios
 
             if (usuarioId == null)
             {
-                throw new Exception($"Erro Usuario: Usuario de id {usuarioId} não encontrado");
+                throw new KeyNotFoundException($"Erro Usuario: Usuario de id {usuarioId} não encontrado");
             }
 
             if (tarefaId == null)
             {
-                throw new Exception($"Erro tarefa: {tarefaId} não encontrada");
+                throw new KeyNotFoundException($"Erro tarefa: {tarefaId} não encontrada");
             }
 
             _dbContext.Remove(tarefaId);

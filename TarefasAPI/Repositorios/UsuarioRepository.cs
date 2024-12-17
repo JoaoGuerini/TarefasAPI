@@ -15,7 +15,14 @@ namespace TarefasApi.Repositorios
         }
         public async Task<Usuario> BuscarId(int id)
         {
-            return await _dbContext.Usuarios.FirstOrDefaultAsync(usuario => usuario.Id == id);
+            var usuarioId = await _dbContext.Usuarios.FirstOrDefaultAsync(usuario => usuario.Id == id);
+             
+            if(usuarioId == null)
+            {
+                throw new KeyNotFoundException($"Usuario por ID: Usuario não encontrado");
+            }
+
+            return usuarioId;
         }
 
         public async Task<List<Usuario>> BuscarTodosUsuarios()
@@ -25,18 +32,26 @@ namespace TarefasApi.Repositorios
         }
         public async Task<Usuario> Adicionar(Usuario usuario)
         {
-            await _dbContext.Usuarios.AddAsync(usuario);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dbContext.Usuarios.AddAsync(usuario);
+                await _dbContext.SaveChangesAsync();
 
-            return usuario;
+                return usuario;
+            }
+            catch (Exception ex)
+            {
+                throw new BadHttpRequestException($"Informações incorretas");
+            }
+            
         }
 
-        public async Task<Usuario> Atualizar(Usuario usuario, int id)
+        public async Task<Usuario> Atualizar(Usuario usuario, int idUsuario)
         {
-            Usuario usuarioId = await BuscarId(id);
+            Usuario usuarioId = await BuscarId(idUsuario);
             if (usuarioId == null)
             {
-                throw new Exception($"Usuario por ID: {id} não encontrado");
+                throw new KeyNotFoundException($"Usuario por ID: {idUsuario} não encontrado");
             }
 
             usuarioId.Name = usuario.Name;
@@ -48,14 +63,16 @@ namespace TarefasApi.Repositorios
 
         }
 
-        public async Task<bool> Apagar(int id)
+        public async Task<bool> Apagar(int idUsuario)
         {
-            Usuario usuarioId = await BuscarId(id);
+            Usuario usuarioId = await BuscarId(idUsuario);
 
             if(usuarioId == null)
             {
-                throw new Exception($"Apagar usuario por ID: {id} não encontrado");
+                throw new KeyNotFoundException($"Apagar usuario por ID: {usuarioId} não encontrado");
             }
+            var tarefasUser = _dbContext.Tarefas.Where(tar => tar.UsuarioId == usuarioId.Id);
+            _dbContext.Tarefas.RemoveRange(tarefasUser);
 
             _dbContext.Usuarios.Remove(usuarioId);
             await _dbContext.SaveChangesAsync();
