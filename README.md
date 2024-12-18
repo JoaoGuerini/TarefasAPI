@@ -13,7 +13,6 @@
 </ul>
 
 <h2>Informações e Atualizações</h2>
-<p>No momento, a API possui endpoints voltados exclusivamente para a <strong>alteração de usuários</strong>, permitindo que informações como nome, e-mail e outras credenciais sejam atualizadas de forma simples e eficiente./p>
-<p>Em futuras atualizações, a API incluirá endpoints dedicados à manipulação e gerenciamento dos dados das tarefas, ampliando suas funcionalidades e oferecendo um controle mais completo sobre o sistema.</p>
+<p>No momento, estou fazendo o desenvolvimento do figma.</p>
 
 <h3>Obrigado!</h3>
