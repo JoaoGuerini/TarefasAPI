@@ -19,9 +19,8 @@ namespace TarefasApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddEntityFrameworkSqlServer()
-                .AddDbContext<TarefasDBContext>(
-                    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
+            builder.Services.AddDbContext<TarefasDBContext>(
+                    options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
                 );
 
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
