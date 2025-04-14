@@ -15,9 +15,17 @@ namespace TarefasAPI.Models
         public string? Description { get; set; }
         public StatusTarefa Status { get; set; }
 
+        public List<SubTarefa>? SubTarefa { get; set; }
+
         [SwaggerIgnore]
         public virtual Usuario? Usuario { get; set; }
-
     }
+
+    public class SubTarefa 
+    {
+        public int? Id { get; set; }
+        public string? Name { get; set; }
+        public int? TarefaId { get; set; }
+    }
+
 }
-    

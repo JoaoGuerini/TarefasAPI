@@ -21,6 +21,27 @@ namespace TarefasApi.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("TarefasAPI.Models.SubTarefa", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("TarefaId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TarefaId");
+
+                    b.ToTable("SubTarefas");
+                });
+
             modelBuilder.Entity("TarefasAPI.Models.Tarefa", b =>
                 {
                     b.Property<int>("Id")
@@ -31,18 +52,18 @@ namespace TarefasApi.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("integer");
+                    b.Property<long?>("UsuarioId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -74,13 +95,31 @@ namespace TarefasApi.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("TarefasAPI.Models.SubTarefa", b =>
+                {
+                    b.HasOne("TarefasAPI.Models.Tarefa", null)
+                        .WithMany("SubTarefa")
+                        .HasForeignKey("TarefaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("TarefasAPI.Models.Tarefa", b =>
                 {
                     b.HasOne("TarefasAPI.Models.Usuario", "Usuario")
-                        .WithMany()
+                        .WithMany("Tarefas")
                         .HasForeignKey("UsuarioId");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("TarefasAPI.Models.Tarefa", b =>
+                {
+                    b.Navigation("SubTarefa");
+                });
+
+            modelBuilder.Entity("TarefasAPI.Models.Usuario", b =>
+                {
+                    b.Navigation("Tarefas");
                 });
 #pragma warning restore 612, 618
         }
