@@ -14,7 +14,7 @@ namespace TarefasAPI.Controllers
         {
             _usuarioRepository = usuarioRepository;
         }
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<ActionResult<List<Usuario>>> BuscarUsuarios()
         {
             try
@@ -29,8 +29,8 @@ namespace TarefasAPI.Controllers
             
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> BuscarPorId(int id)
+        [HttpGet("get_id")]
+        public async Task<ActionResult<Usuario>> BuscarPorId([FromQuery] int id)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace TarefasAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<ActionResult<Usuario>> Cadastrar([FromBody] Usuario usuario)
         {
             try
@@ -66,8 +66,8 @@ namespace TarefasAPI.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Usuario>> RemoverTodos(int id)
+        [HttpDelete("delete")]
+        public async Task<ActionResult<Usuario>> RemoverTodos([FromQuery] int id)
         {
             try
             {
@@ -85,8 +85,8 @@ namespace TarefasAPI.Controllers
             
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Usuario>> Atualizar([FromBody] Usuario usuario, int id)
+        [HttpPut("Atualizar")]
+        public async Task<ActionResult<Usuario>> Atualizar([FromBody] Usuario usuario, [FromQuery] int id)
         {
             try
             {

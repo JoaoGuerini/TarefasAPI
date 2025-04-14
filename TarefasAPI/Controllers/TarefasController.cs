@@ -16,7 +16,7 @@ namespace TarefasApi.Controllers
             _tarefasRepository = tarefasRepository;
         }
 
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<ActionResult<List<Tarefa>>> BuscarTodasTarefas()
         {
             try
@@ -32,8 +32,9 @@ namespace TarefasApi.Controllers
            
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<List<Tarefa>>> BuscarTarefasUsuarioId(int id)
+        [HttpGet("get_tarefa")]
+        //[HttpGet("{id}")]
+        public async Task<ActionResult<List<Tarefa>>> BuscarTarefasUsuarioId([FromQuery] int id)
         {
             try
             {
@@ -51,8 +52,9 @@ namespace TarefasApi.Controllers
             
         }
 
-        [HttpGet("{idUsuario}/{idTarefa}")]
-        public async Task<ActionResult<Tarefa>> BuscarTarefaUsuarioId(int idUsuario, int idTarefa)
+        [HttpGet("get_tarefa_usuario")]
+        //[HttpGet("{idUsuario}/{idTarefa}")]
+        public async Task<ActionResult<Tarefa>> BuscarTarefaUsuarioId([FromQuery] int idUsuario, [FromQuery] int idTarefa)
         {
             try
             {
@@ -71,8 +73,9 @@ namespace TarefasApi.Controllers
             
         }
 
-        [HttpPost("{idUsuario}")]
-        public async Task<ActionResult<Tarefa>> CadastrarTarefa([FromBody] Tarefa tarefa, int idUsuario)
+        [HttpPost("add")]
+        //[HttpPost("{idUsuario}")]
+        public async Task<ActionResult<Tarefa>> CadastrarTarefa([FromBody] Tarefa tarefa, [FromQuery] int idUsuario)
         {
             try
             {
@@ -90,8 +93,9 @@ namespace TarefasApi.Controllers
 
         }
 
-        [HttpPut("{idUsuario}/{idTarefa}")]
-        public async Task<ActionResult<Tarefa>> AtualizarTarefa([FromBody] Tarefa tarefa, int idUsuario, int idTarefa)
+        [HttpPut("Atualizar")]
+        //[HttpPut("{idUsuario}/{idTarefa}")]
+        public async Task<ActionResult<Tarefa>> AtualizarTarefa([FromBody] Tarefa tarefa, [FromQuery] int idUsuario, [FromQuery] int idTarefa)
         {
             try
             {
@@ -110,8 +114,9 @@ namespace TarefasApi.Controllers
 
         }
 
-        [HttpDelete("{idUsuario}/{idTarefa}")]
-        public async Task<ActionResult<Tarefa>> ExcluirTarefa(int idTarefa, int idUsuario)
+        [HttpDelete("delete")]
+        //[HttpDelete("{idUsuario}/{idTarefa}")]
+        public async Task<ActionResult<Tarefa>> ExcluirTarefa([FromQuery] int idTarefa, [FromQuery] int idUsuario)
         {
             try
             {
