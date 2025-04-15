@@ -17,7 +17,7 @@ namespace TarefasAPI.Models
 
         public List<SubTarefa>? SubTarefa { get; set; }
 
-        [SwaggerIgnore]
+        [JsonIgnore]
         public virtual Usuario? Usuario { get; set; }
     }
 

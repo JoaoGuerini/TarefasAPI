@@ -44,7 +44,9 @@ namespace TarefasApi.Repositorios
 
         public async Task<List<Tarefa>> BuscarTodasTarefas()
         {
-            return await _dbContext.Tarefas.ToListAsync();
+            return await _dbContext.Tarefas
+                .Include(tarefa => tarefa.SubTarefa)
+                .ToListAsync();
         }
         public async Task<Tarefa> AtualizarTarefa(Tarefa tarefa, int idTarefa, int idUsuario)
         {
@@ -74,6 +76,13 @@ namespace TarefasApi.Repositorios
             return tarefaId;
         }
 
+        public async Task<Tarefa> BuscarTarefaId(int idTarefa)
+        {
+            return await _dbContext.Tarefas
+                .Include(tarefa => tarefa.SubTarefa)
+                .FirstOrDefaultAsync(tarefa => tarefa.Id == idTarefa);
+        }
+
         public async Task<Tarefa> CadastrarTarefa(Tarefa tarefa, int idUsuario)
         {
 
@@ -87,6 +96,14 @@ namespace TarefasApi.Repositorios
             tarefa.UsuarioId = idUsuario;
 
             await _dbContext.Tarefas.AddAsync(tarefa);
+            await _dbContext.SaveChangesAsync();
+
+            foreach (var item in tarefa.SubTarefa)
+            {
+                item.TarefaId = tarefa.Id;
+                await _dbContext.SubTarefas.AddAsync(item);
+            }
+
             await _dbContext.SaveChangesAsync();
 
             return tarefa;

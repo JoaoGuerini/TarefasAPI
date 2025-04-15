@@ -25,7 +25,7 @@ namespace TarefasApi
 
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<ITarefasRepository, TarefaRepository>();
-
+            builder.Services.AddScoped<ISubtasksRepository, SubtasksRepository>();
 
             var app = builder.Build();
 

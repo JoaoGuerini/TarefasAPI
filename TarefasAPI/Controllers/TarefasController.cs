@@ -38,7 +38,7 @@ namespace TarefasApi.Controllers
         {
             try
             {
-                List<Tarefa> tarefas = await _tarefasRepository.BuscarTarefasUsuario(id);
+                Tarefa tarefas = await _tarefasRepository.BuscarTarefaId(id);
                 return Ok(tarefas);
             }
             catch(KeyNotFoundException ex)
